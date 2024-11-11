@@ -1,25 +1,25 @@
 package com.mycompany.app;
 
 import javax.swing.*;
-
 import com.mycompany.Rano;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 /**
  * Matsaka :)
  */
 public class App extends JFrame {
-    
-    public static void main(String[] args) {
+
+    private JLabel label;
+    private int bidonCount = 0; 
+
+    public App() {
+        
         JFrame frame = new JFrame("Matsaka");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300,200);
+        frame.setSize(300, 200);
 
-        
-        //Choose the City
+      
         JMenuBar menuBar = new JMenuBar();
         JMenu fileMenu = new JMenu("Ville");
         JMenuItem city1 = new JMenuItem("Ambohipo");
@@ -35,46 +35,42 @@ public class App extends JFrame {
         fileMenu.add(city5);
         menuBar.add(fileMenu);
 
-        city1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                Rano rano = new Rano(city1);
-                JLabel label = new JLabel("There is " + rano.getBidon() + " waiting before you.");
-                frame.add(label);
-                label.setVisible(true);
-                System.out.println("Label Added");
-            }
-        });
+        
+        label = new JLabel("Please select a city to see bidon count.");
+        frame.add(label, BorderLayout.NORTH);
 
+        // Action listeners for each city menu item
+        city1.addActionListener(e -> updateBidonCount("Ambohipo"));
+        city2.addActionListener(e -> updateBidonCount("Andraharo"));
+        city3.addActionListener(e -> updateBidonCount("Ankorondrano"));
+        city4.addActionListener(e -> updateBidonCount("Andohalo"));
+        city5.addActionListener(e -> updateBidonCount("67"));
 
-        //Add queue or not to get water
-        JPanel panel= new JPanel();
-        JButton button= new JButton("Line up for Queue");
+     
+        JPanel panel = new JPanel();
+        JButton button = new JButton("Line up for Queue");
         panel.add(button);
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e){
-                
-                JOptionPane.showMessageDialog(frame,"Added Clicked");
-            }
+        button.addActionListener(e -> {
+            bidonCount++;
+            label.setText("There are " + bidonCount + " bidons waiting before you.");
+            JOptionPane.showMessageDialog(frame, "You have lined up. Current bidons: " + bidonCount);
         });
 
-
-    
-        frame.add(panel,BorderLayout.CENTER);
+       
+        frame.add(panel, BorderLayout.CENTER);
         frame.setJMenuBar(menuBar);
         frame.setVisible(true);
-
-       
-      
-        
     }
 
-    public void intialize(){
+    
+    private void updateBidonCount(String cityName) {
+        Rano rano = new Rano(cityName);
+        bidonCount = rano.getBidon(); 
+        label.setText("There are " + bidonCount + " bidons waiting in " + cityName + ".");
+    }
 
-
-
-
+    public static void main(String[] args) {
+        new App();
     }
 }

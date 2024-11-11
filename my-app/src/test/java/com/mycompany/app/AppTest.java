@@ -1,29 +1,40 @@
 package com.mycompany.app;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import javax.swing.JMenuItem;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import com.mycompany.Rano;
 
-/**
- * Unit test for simple App.
- */
 public class AppTest {
 
-    /**
-     * Rigorous Test :-)
-     */
+    private Rano rano;
+
+    @BeforeEach
+    public void setUp() {
+        rano = new Rano("Ambohipo");
+    }
+
     @Test
-    public void addBidonTest() {
-        JMenuItem item1= new JMenuItem("Ambohijatovo");
-        Rano rano = new Rano(item1);
-        rano.addBidon(1);
+    public void testInitialBidonCountIsZero() {
+        assertEquals(0, rano.getBidon());
+    }
+
+    @Test
+    public void testCityNameIsCorrect() {
+        assertEquals("Ambohipo", rano.getCityName());
+    }
+
+    @Test
+    public void testAddBidonIncreasesCount() {
         rano.addBidon(2);
-        assertEquals(rano.bidon,3);
-        
+        assertEquals(2, rano.getBidon());
+    }
+
+    @Test
+    public void testEstimationNotNull() {
+        rano.addBidon(3);
+        assertNotNull(rano.getEstimation());
     }
 }
